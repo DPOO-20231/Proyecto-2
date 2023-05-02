@@ -37,7 +37,7 @@ public class PropertyManagamentSystem {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	
+
 	public PropertyManagamentSystem()
 	{
 		try {
@@ -157,13 +157,15 @@ public class PropertyManagamentSystem {
 		String rol="No encontrado";
 		Empleado elempleado= null;
 		elempleado = Lempleado.get(IDusuario);
-		System.out.println(elempleado.getrol());
+		System.out.println(Lempleado.keySet());
 		if (elempleado == null)
 		{
 			rol = "ID erroneo";
+			System.out.println("errado");
 		}
 		else 
 		{
+			System.out.println(elempleado.getPassword());
 			if (elempleado.getPassword().equals(Contraseña)){
 			rol=elempleado.getrol();;
 			}
