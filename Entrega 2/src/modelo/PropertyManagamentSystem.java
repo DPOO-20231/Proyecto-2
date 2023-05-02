@@ -30,21 +30,18 @@ public class PropertyManagamentSystem {
 	private ArrayList<Recepcionista> opcionesRecepcionista;
 	private ArrayList<Empleado> opcionesEmpleado;
 	private HashMap<String, ArrayList<String>> habitacionesOcupadas;
-	private ArrayList<Usuario> usuarios;
-	private HashMap<String, Empleado> empleados;
+	public ArrayList<Usuario> usuarios;
+	public HashMap<String, Empleado> Lempleado;
 	
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
+	
 	public PropertyManagamentSystem()
 	{
 		try {
-			ArrayList<Object> DataC = Loader.cargarData(this);
-			this.empleados = (HashMap<String, Empleado>) DataC.get(0);
-			this.servicios = (ArrayList<Consumible>) DataC.get(1);
-
-
+			Loader.cargarData(this);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +92,7 @@ public class PropertyManagamentSystem {
 	public void CreaPersonal()
 	{
 		Administrador Admin=null;
-		Admin.cargarPersonal(empleados, this);
+		Admin.cargarPersonal(Lempleado, this);
 	}
 	public void consultaServicio(String IDServicio){
         Producto servicioEncontrado= null;
@@ -148,7 +145,7 @@ public class PropertyManagamentSystem {
 			}
 	public void RealizarReserva(){
 
-		Reserva Newreserva = new Reserva(null, null, habitaciones, null, null, null, null)
+		Reserva Newreserva = new Reserva(null, null, habitaciones, null, null, null, null);
 	}
 	
 
@@ -159,8 +156,8 @@ public class PropertyManagamentSystem {
 	{
 		String rol="No encontrado";
 		Empleado elempleado= null;
-			
-		elempleado = empleados.get(IDusuario);
+		elempleado = Lempleado.get(IDusuario);
+		System.out.println(elempleado.getrol());
 		if (elempleado == null)
 		{
 			rol = "ID erroneo";
@@ -172,7 +169,6 @@ public class PropertyManagamentSystem {
 			}
 			else {
 				rol = "contraseña erronea";
-
 		}
 		}
 		return rol;

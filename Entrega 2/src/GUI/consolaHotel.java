@@ -1,4 +1,4 @@
-package consola;
+package GUI;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,10 +44,9 @@ public class consolaHotel {
 					else if (Rol=="Empleado"){
 						Emple();
 						continuar = false;}
-					
-
-
-
+					else{
+						System.out.println(Rol);
+					}
 					}
 				else if (Login == 2)
 				{

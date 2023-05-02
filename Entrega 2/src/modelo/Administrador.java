@@ -289,7 +289,7 @@ public class Administrador {
             System.out.println("Rol: ");
             String rol = scanner.nextLine();
             Empleado empleado = new Empleado(nombre, id, correo, password, rol, PMS);
-            diccionario.put(id, empleado);
+            PMS.Lempleado.put(id, empleado);
     	}
     }
     
