@@ -157,7 +157,7 @@ public class PropertyManagamentSystem {
 		String rol="No encontrado";
 		Empleado elempleado= null;
 		elempleado = Lempleado.get(IDusuario);
-		System.out.println(Lempleado.keySet());
+		System.out.println(elempleado);
 		if (elempleado == null)
 		{
 			rol = "ID erroneo";

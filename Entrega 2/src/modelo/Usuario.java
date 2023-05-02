@@ -7,10 +7,9 @@ public class Usuario {
 	protected static PropertyManagamentSystem PMS;
 	
 	public Usuario(String name, String id, String correo, String password, String rol, PropertyManagamentSystem pms) {
-		super();
-		nombre = name;
-		Id = id;
-		Password = password;
+		this.nombre = name;
+		this.Id = id;
+		this.Password = password;
 		PMS = pms;
 	}
 

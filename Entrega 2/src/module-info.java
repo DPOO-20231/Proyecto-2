@@ -6,4 +6,5 @@
  *
  */
 module PropertyManagamentSystem {
+    requires java.desktop;
 }

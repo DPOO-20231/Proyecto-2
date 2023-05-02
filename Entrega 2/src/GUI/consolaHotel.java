@@ -300,12 +300,7 @@ public String VerifyLogin()
 	return Rol;
 }
 
-public static void main(String[] args)
-	{
-		consolaHotel consola = new consolaHotel();
-		
-		consola.ejecutarAplicacion();
-	}
+
 
 
 
