@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,7 +107,7 @@ public class Recepcionista extends Empleado{
 	}
 	
 	
-	public void crearReserva(Date inicio, Date fin, ArrayList<String> idHabitaciones, ArrayList<ArrayList<String>> huespeds, String documento, String correo, String numero, String IDGrupo) {
+	public void crearReserva(Date inicio, Date fin, ArrayList<String> idHabitaciones, ArrayList<ArrayList<String>> huespeds, String documento, String correo, String numero, String IDGrupo) throws IOException {
 		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
 		ArrayList<Habitacion> habitacionesReservadas = new ArrayList<Habitacion>();
 		ArrayList<Huesped> huespedsReserva = new ArrayList<Huesped>();
@@ -124,17 +125,21 @@ public class Recepcionista extends Empleado{
 		}
 		
 		reservas.add(new ReservarHabitacion(inicio, fin, habitacionesReservadas, huespedsReserva, documento, correo, numero));
-		reservas.get(reservas.size() - 1).crearReserva();
+		Reserva reserva = reservas.get(reservas.size() - 1).crearReserva();
+		ModificadorDeArchivo.guardarReserva(PMS, reserva);
 	}
 	
-	public String cancelarReserva(String documentoHuesped) {
+	public String cancelarReserva(String documentoHuesped) throws IOException {
 		String rta = "";
+		String numero = null;
 		for (ReservarHabitacion rh: reservas) {
 			if (documentoHuesped.equals(rh.getDocumento())){
 				rta = rh.cancelarReserva();
+				numero = rh.getNumero();
 				break;
 			}
 		}
+		ModificadorDeArchivo.removerReserva(PMS, numero);
 		return rta;
 	}
 }

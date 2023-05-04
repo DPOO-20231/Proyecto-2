@@ -1,5 +1,12 @@
 package modelo;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +22,7 @@ import modelo.PropertyManagamentSystem;
 public class ModificadorDeArchivo {
 	private String nombreArchivo;
 	private String mensaje;
+	private static ArrayList<Reserva> reservas;
 	
 	
 	public static void modificarCapacidad(Habitacion habitacion) {
@@ -193,7 +201,73 @@ public class ModificadorDeArchivo {
         System.out.println("Capacidad modificada exitosamente.");
     }
     
+	public static String textoReserva(PropertyManagamentSystem PMS, Reserva reserva) throws FileNotFoundException, IOException{
+		
+		ArrayList<String> listaHu = new ArrayList<String>();
+		for (Huesped item:reserva.getListaHuespedes()) {
+			String nombre = item.getNombre();
+			listaHu.add(nombre);
+		}
+		ArrayList<String> listaHa = new ArrayList<String>();
+		for (Habitacion item:reserva.getHabitaciones()) {
+			String id = item.getIdHabi();
+			listaHa.add(id);
+		}
+		ArrayList<String> listaCu = new ArrayList<String>();
+		for (Facturacion item:reserva.getCuenta()) {
+			int precio = item.getPrecioTotal();
+			listaCu.add(Integer.toString(precio));
+		}
+		Date dateInicio = reserva.getDateInicio();
+		Date dateFin = reserva.getDateFin();
+		double precioTotal = reserva.getPrecioTotal();
+		String documento = reserva.getDocumento();
+		String correo = reserva.getCorreo();
+		String numero = reserva.getNumero();
+
+		String texto = dateInicio+";"+dateFin+";"+precioTotal+";"+listaHa+";"+listaHu+";"+listaCu+";"+documento+";"+correo+";"+numero;
+		return texto;
+		
+	}
+	
+	
+	public static void guardarReserva(PropertyManagamentSystem PMS, Reserva reserva) throws IOException {
+		String fileReserva= System.getProperty("user.dir") + "\\Entrega 2\\data\\Reservas.txt";
+		File archivo = new File(fileReserva);
+		FileWriter fw = new FileWriter(archivo);
+		String texto = textoReserva(PMS, reserva);
+		fw.write(texto);
+		fw.close();
+	}
     
-    
+	public static void removerReserva(PropertyManagamentSystem PMS, String numero) throws IOException {
+		String fileReserva= System.getProperty("user.dir") + "\\Entrega 2\\data\\Reservas.txt";
+		File archivo = new File(fileReserva);
+		File archivoTemportal = new File("-.txt");
+
+		BufferedReader reader = new BufferedReader(new FileReader(archivo));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(archivoTemportal));
+
+		Reserva reserva = null;
+		for (Reserva item:reservas) {
+			if (numero == item.getNumero()) {
+				reserva = item;
+				break;
+			}
+		}
+		
+		String borrar = reserva.getNumero();
+		String linea;
+
+		while((linea = reader.readLine()) != null) {
+			String[] valores = linea.split(":");
+			String numerov = valores[9];
+		    if(numerov.equals(borrar)) continue;
+		    writer.write(linea);
+		}
+		writer.close(); 
+		reader.close(); 
+		boolean successful = archivoTemportal.renameTo(archivo);
+	}
 
 }

@@ -22,14 +22,14 @@ import modelo.Loader;
 import modelo.ModificadorDeArchivo;
 
 public class PropertyManagamentSystem {
-	private ArrayList<Consumible> servicios;
-	private ArrayList<Habitacion> habitaciones;
-	private ModificadorDeArchivo modificadorArchivo;
-	private ArrayList<Reserva> ConsultaReserva;
-	private ArrayList<Producto> productos;
-	private ArrayList<Recepcionista> opcionesRecepcionista;
-	private ArrayList<Empleado> opcionesEmpleado;
-	private HashMap<String, ArrayList<String>> habitacionesOcupadas;
+	public ArrayList<Consumible> servicios;
+	public ArrayList<Habitacion> habitaciones;
+	public ModificadorDeArchivo modificadorArchivo;
+	public ArrayList<Reserva> ConsultaReserva;
+	public ArrayList<Producto> productos;
+	public ArrayList<Recepcionista> opcionesRecepcionista;
+	public ArrayList<Empleado> opcionesEmpleado;
+	public HashMap<String, ArrayList<String>> habitacionesOcupadas;
 	public ArrayList<Usuario> usuarios;
 	public HashMap<String, Empleado> Lempleado;
 	
@@ -82,7 +82,7 @@ public class PropertyManagamentSystem {
 	public void crearHabi(String NameFile)
 	{
 		Administrador Admin=null;
-		Admin.cargarHabitaciones_txt(habitaciones, NameFile);
+		Admin.cargarHabitaciones_mano(habitaciones);
 	}
 	public void ModifyHabi()
 	{

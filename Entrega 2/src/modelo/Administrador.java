@@ -16,54 +16,6 @@ import java.util.Scanner;
 import java.util.HashMap;
 
 public class Administrador {
-    public void cargarHabitaciones_txt(ArrayList<Habitacion> habitaciones, String archivo) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] campos = linea.split(",");
-                String idHabi = campos[0];
-                String ubicacion = campos[1];
-                int capacidad = Integer.parseInt(campos[2]);
-                String tipo = campos[3];
-                int numcamas = Integer.parseInt(campos[4]);
-                ArrayList<Cama> camas = new ArrayList<>();
-                String[] camasStr = campos[5].split(";");
-                for (String camaStr : camasStr) {
-                    String[] camaCampos = camaStr.split("-");
-                    String size = camaCampos[0];
-                    int capacidadC = Integer.parseInt(camaCampos[1]);
-                    String uso = camaCampos[2];
-                    Cama cama = new Cama(size, capacidadC, uso);
-                    camas.add(cama);
-                }
-                HashMap<String, Integer> elementosDeCobro = new HashMap<String, Integer>();
-                String[] elementos = campos[6].split(";");
-                for (String elemento : elementos ) {
-                	String[] dictionary = elemento.split(":");
-                	String nombre = dictionary[0];
-                	int precio = Integer.parseInt(dictionary[1]);
-                	elementosDeCobro.put(nombre, precio);
-                }
-                ArrayList<Tarifa> tarifas = new ArrayList<>();
-                String[] tarifasStr = campos[7].split(";");
-                for (String tarifaStr : tarifasStr) {
-                    String[] tarifaCampos = tarifaStr.split("-");
-                    int valor = Integer.parseInt(tarifaCampos[0]);
-                    Date fechainicio = new Date(Long.parseLong(tarifaCampos[1]));
-                    Date fechafinal = new Date(Long.parseLong(tarifaCampos[2]));
-                    String producto = tarifaCampos[3];
-                    Tarifa tarifa = new Tarifa(valor, fechainicio,fechafinal, producto);
-                    tarifas.add(tarifa);
-                }
-              
-                Habitacion habitacion = new Habitacion(idHabi, ubicacion, capacidad, tipo, numcamas,elementosDeCobro, 
-                         tarifas, camas);
-                habitaciones.add(habitacion);
-            }
-        } catch (IOException e) {
-            System.err.format("Error de E/S: %s%n", e);
-        }
-    }
     public void cargarHabitaciones_mano(ArrayList<Habitacion> habitaciones) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese los datos de la habitación (o ingrese 'fin' para terminar):");

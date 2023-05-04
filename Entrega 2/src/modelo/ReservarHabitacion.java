@@ -143,12 +143,14 @@ public class ReservarHabitacion {
 		
 	}
 	
-	public void crearReserva() {
+	public Reserva crearReserva() {
 		
 		Reserva reserva = new Reserva(dateInicio, dateFin, habitaciones, huespeds, documento, correo, numero);
 		for (Habitacion item:habitaciones) {
 			item.setReservas(reserva);
-		}	
+		}
+		
+		return reserva;
 		
 	}
 	
