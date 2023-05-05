@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.*;
 
-public class PHABIFILE extends JPanel{
-	public PHABIFILE() {
+public class LienzoHabitacionDesdeArchivo extends JPanel{
+	public LienzoHabitacionDesdeArchivo() {
 		this.setSize(1060,950);
         Color BColor=new Color(0x763626);
 
