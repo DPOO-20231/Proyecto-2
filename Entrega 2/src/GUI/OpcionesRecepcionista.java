@@ -13,10 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
+import modelo.PropertyManagementSystem;
 
 public class OpcionesRecepcionista extends JDialog implements ActionListener{
 	
-	public OpcionesRecepcionista() {
+	public OpcionesRecepcionista(PropertyManagementSystem PMS) {
 	
         setTitle("Opciones Recepcionista");
         setPreferredSize(new Dimension(400, 500));

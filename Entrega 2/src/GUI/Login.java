@@ -8,9 +8,14 @@ import javax.swing.border.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-import GUI.HabitacionDesdeArchivo;
+import GUI.OpcionesAdministrador;
+import GUI.OpcionesRecepcionista;
+import GUI.OpcionesRecepcionista;
+import modelo.PropertyManagementSystem;
+import javax.swing.JOptionPane;
 
 public class Login extends JFrame implements ActionListener {
+    private PropertyManagementSystem PMS= new PropertyManagementSystem();
 	public Login() {
 		JFrame ventana = new JFrame();
         Color bBColor=new Color(Integer.parseInt("2C7873",16));
@@ -41,7 +46,24 @@ public class Login extends JFrame implements ActionListener {
         
         JTextField User = new  JTextField( "" );
         JTextField Contraseña = new  JTextField( "" );
-        JButton boton1 = new JButton("Login");
+        JButton boton1 = new JButton("Ingresar");
+        boton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String rol = PMS.login(User.getText(), Contraseña.getText());
+                if (rol.equals("Administrador")){
+                    ventana.dispose();
+                    new OpcionesAdministrador(PMS);
+                }
+                else if(rol.equals("Recepcionista")){
+                    ventana.dispose();
+                    new OpcionesRecepcionista(PMS);
+                }
+                else{
+                    VentanaAviso(rol);
+                }
+                new HabitacionDesdeManual(); 
+            }
+        });
         boton1.setBackground(BColor);
         boton1.setFont(garamond);
         boton1.setForeground(Ctexto);
@@ -53,7 +75,23 @@ public class Login extends JFrame implements ActionListener {
         ventana.add(boton1);
         
 	}
+    
+private void VentanaAviso (String mensaje){
 
+        // Mostrar ventana de aviso
+        JOptionPane.showMessageDialog(null, mensaje, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+        // Mostrar ventana de aviso con botón de aceptar
+        int opcion = JOptionPane.showOptionDialog(null, mensaje,
+                "Aviso", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                 new Object[]{"Aceptar"}, null);
+
+        // Verificar la opción seleccionada
+        if (opcion == JOptionPane.OK_OPTION) {
+            System.out.println("El usuario seleccionó 'Aceptar'.");
+        }
+    
+}
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
