@@ -41,6 +41,30 @@ public class PropertyManagementSystem {
 		return rol;
 	}
 
+	public ArrayList<Object> findHabi(String IDHabi){
+		ArrayList<Object> solve=new ArrayList<>();
+		Habitacion habifind=habitaciones.get(IDHabi);
+		if (habifind!=null){
+		solve.add(habifind.getTipo());
+		solve.add(habifind.getUbicacion());
+		solve.add(habifind.isBalcon());
+		solve.add(habifind.isVista());
+		solve.add(habifind.isCocina());
+		ArrayList<Cama> camas=habifind.getCamas();
+		int i =0;
+		while (i<camas.size())
+		{
+			Cama camae=camas.get(i);
+			solve.add(camae.getTipo());
+			solve.add(camae.getTamaño());
+			solve.add(camae.getCapacidad());
+			i++;
+		}
+		}
+		return solve; 
+		
+	}
+
 	public void newPassword(String newPasword) {
 		if (adminActivo != null) {
 			adminActivo.setContrasenia(newPasword);

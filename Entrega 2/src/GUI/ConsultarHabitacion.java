@@ -11,7 +11,7 @@ public class ConsultarHabitacion extends JFrame implements ActionListener {
     private Color BRColor = new Color(0x021C1E);
     private Font garamond = new Font("Garamond", Font.PLAIN, 16);
     private Font Title=new Font("Garamond", Font.BOLD, 27);
-    public ConsultarHabitacion(JDialog VentanaAnterior, PropertyManagementSystem PMS){
+    public ConsultarHabitacion(JFrame VentanaAnterior, PropertyManagementSystem PMS){
         VentanaAnterior.setVisible(false);
         JFrame ventana = new JFrame();
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
