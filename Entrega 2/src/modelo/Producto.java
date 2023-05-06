@@ -1,72 +1,28 @@
-package modelo;
-
-import java.time.LocalTime;
+package logic;
 
 public class Producto {
-	private String nombre;
-	private String descripcion;
-	private boolean disponibleHabitacion;
-	private int precio;
-	private LocalTime inicioDisponible;
-	private LocalTime finDisponible;
+	String nombre;
+	int precio;
+	String disponibilidad;
+	boolean servicioCuarto;
 	
-	public Producto(String nombre, String descripcion, int precio, boolean disponibleHabitacion,
-			LocalTime inicioDisponible, LocalTime finDisponible) {
-		super();
+	public Producto(String nombre, int precio, String disponibilidad, boolean servicioCuarto) {
 		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.disponibleHabitacion = disponibleHabitacion;
 		this.precio = precio;
-		this.inicioDisponible = inicioDisponible;
-		this.finDisponible = finDisponible;
+		this.disponibilidad = disponibilidad;
+		this.servicioCuarto = servicioCuarto;
 	}
 	
 	public String getNombre() {
 		return nombre;
 	}
-	
 	public int getPrecio() {
 		return precio;
 	}
-	
-	public String getDescripcion() {
-		return descripcion;
+	public String getDisponibilidad() {
+		return disponibilidad;
 	}
-	
-	public boolean getDisponibleHabitacion(){
-		return disponibleHabitacion;
+	public boolean isServicioCuarto() {
+		return servicioCuarto;
 	}
-	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public void setDisponibleHabitacion(boolean disponibleHabitacion) {
-		this.disponibleHabitacion = disponibleHabitacion;
-	}
-
-	public void setPrecio(int precio) {
-		this.precio = precio;
-	}
-
-	public void setInicioDisponible(LocalTime inicioDisponible) {
-		this.inicioDisponible = inicioDisponible;
-	}
-
-	public void setFinDisponible(LocalTime finDisponible) {
-		this.finDisponible = finDisponible;
-	}
-
-	public LocalTime getInicioDisponible() {
-		return inicioDisponible;
-	}
-	
-	public LocalTime getFinDisponible() {
-		return finDisponible;
-	}
-	
 }

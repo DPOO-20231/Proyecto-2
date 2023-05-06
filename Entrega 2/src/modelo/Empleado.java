@@ -1,73 +1,19 @@
-package modelo;
+package logic;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 
-public class Empleado extends Usuario{	
-	private String rol;
-	private String password;
-	private static ArrayList<Habitacion> habitacionesHotel;
-	
-	public Empleado(String name, String id, String correo, String password, String rol, PropertyManagamentSystem pms) {
-		super(name, id, correo, password, rol, pms);
-	}
-	public String getrol() {
-		return rol;
-	}
-	public String getPassword(){
-		return password;
-	}
-	public void setHabitacionesHotel(ArrayList<Habitacion> habitaciones) {
-		habitacionesHotel = habitaciones;
+public class Empleado extends Usuario{
+	protected HashMap<String, Cuenta> cuentas;
+	Empleado(String nombre, String ID, String numeroContacto, String correo, String rol, String usuario,
+			String contrasenia, HashMap<String, Habitacion> habitaciones, HashMap<String, Cuenta> cuentas) {
+		super(nombre, ID, numeroContacto, correo, rol, usuario, contrasenia, habitaciones);
+		this.cuentas = cuentas;
 	}
 	
-	public void registrarConsumo(String idConsumo, String idHabitacion, boolean pago) {
-		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
-		ArrayList<Consumible> servicios = super.PMS.getServicios();
-		int precio = 0;
-		String concepto = "";
-		
-		for (Consumible c: servicios) {
-			if (c.getID().equals(idConsumo)) {
-				precio = c.getPrecioTotal();
-				concepto = c.getConcepto();
-			}
-		}
-		Date fechaConsumo = new Date();
-		
-		for (Habitacion h: habitaciones) {
-			if (h.getIdHabi().equals(idHabitacion)) {
-				h.addFacturacion(fechaConsumo, concepto, precio, true, pago, "Grupal");
-				break;
-			}
-		}
-		
+	public void agregarServicio(Huesped huesped, Comsumible servicio, boolean pago, String fecha) {
+		Cuenta cuenta = cuentas.get(huesped.getCuentaActual());
+		cuenta.agregarServicio(servicio, pago, fecha);
+		cuentas.put(huesped.getCuentaActual(), cuenta);
 	}
-	
-	public void registrarConsumo(String idConsumo, String idHabitacion, boolean pago, String nombre) {
-		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
-		ArrayList<Consumible> servicios = super.PMS.getServicios();
-		int precio = 0;
-		String concepto = "";
-		
-		for (Consumible c: servicios) {
-			if (c.getID().equals(idConsumo)) {
-				precio = c.getPrecioTotal();
-				concepto = c.getConcepto();
-			}
-		}
-		Date fechaConsumo = new Date();
-		
-		for (Habitacion h: habitaciones) {
-			if (h.getIdHabi().equals(idHabitacion)) {
-				h.addFacturacion(fechaConsumo, concepto, precio, false, pago, nombre);
-				break;
-			}
-		}
-		
-	}
-	
-	
-	
+
 }

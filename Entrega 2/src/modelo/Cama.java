@@ -1,36 +1,30 @@
-package modelo;
-
-import java.util.ArrayList;
+package logic;
 
 public class Cama {
-    private String size;
-    private Integer capacidad;
-    private String uso;
+    private String tamaño;
+    private int capacidad;
+    private String tipo;
 
-    public Cama(String size, int capacidad, String uso) {
-        this.size = size;
+    public Cama(String tamaño, int capacidad, String tipo) {
+        this.tamaño = tamaño;
         this.capacidad = capacidad;
-        this.uso = uso;
+        this.tipo = tipo;
     }
 
-    public String getSize() {
-        return size;
+    public String getTamaño() {
+        return tamaño;
     }
 
-    public Integer getCapacidad() {
+    public int getCapacidad() {
         return capacidad;
     }
 
-    public String getUso() {
-        return uso;
+    public String getTipo() {
+        return tipo;
     }
-
-    public ArrayList<Object> getEspecificaciones(){
-        ArrayList<Object> informacion = new ArrayList<Object>();
-        informacion.add(getSize());
-        informacion.add(getCapacidad());
-        informacion.add(getUso());
-        return informacion;
+    
+    @Override
+    public String toString() {
+		return tamaño + " - " + capacidad + " - " + tipo;
     }
-
 }

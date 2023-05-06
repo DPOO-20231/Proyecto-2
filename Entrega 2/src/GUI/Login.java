@@ -59,4 +59,7 @@ public class Login extends JFrame implements ActionListener {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
+    public static void main(String[] args) {
+        new Login();
+    }
 }

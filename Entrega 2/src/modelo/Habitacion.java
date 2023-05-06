@@ -1,259 +1,120 @@
-package modelo;
+package logic;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Set;
 
 public class Habitacion {
-	private String idHabi;
-	private String ubicacion;
-	private int capacidad;
+	private String idHabitacion;
 	private String tipo;
-	private int numCamas;
-	private HashMap<String,Integer> elementosDeCobro;
-	private ArrayList<Cama> elementosAdicionales;
-	private ArrayList<Reserva> reservas;
-	private ArrayList<Tarifa> tarifas;
-	private ArrayList<Cama> camas;
-	private ArrayList<Facturacion> cuenta;
-	private ArrayList<Huesped> huespeds;
+	private String ubicacion;
+	private boolean balcon;
+	private boolean vista;
+	private boolean cocina;
+	private ArrayList<Cama> camas = new ArrayList<>();
+	private HashMap<String, Disponibilidad> disponibilidad = new HashMap<>();
 	
-	public Habitacion(String idHabi, String ubicacion, int capacidad, String tipo, int numCamas, HashMap<String, Integer> elementosDeCobro,
-			 ArrayList<Tarifa> tarifas, ArrayList<Cama> camas) {
-		this.idHabi = idHabi;
-		this.ubicacion = ubicacion;
-		this.capacidad = capacidad;
+	public Habitacion(String idHabitacion, String tipo, String ubicacion, boolean balcon, boolean vista, boolean cocina){
+		this.idHabitacion = idHabitacion;
 		this.tipo = tipo;
-		this.numCamas = numCamas;
-		this.camas = camas;
-		this.elementosDeCobro = elementosDeCobro;
-		this.elementosAdicionales = new ArrayList<Cama>();
-		this.tarifas = tarifas;
-		this.cuenta = new ArrayList<Facturacion>();
-		this.huespeds = new ArrayList<Huesped>();
-		this.reservas = new ArrayList<Reserva>();
+		this.ubicacion = ubicacion;
+		this.balcon = balcon;
+		this.vista = vista;
+		this.balcon = balcon;
+		this.cocina = cocina;
 	}
 
-	public String getIdHabi() {
-		return idHabi;
+	public String getIdHabitación() {
+		return idHabitacion;
 	}
-
-
-
+	
+	public String getTipo() {
+		return tipo;
+	}
+	
 	public String getUbicacion() {
 		return ubicacion;
 	}
 
+	public boolean isBalcon() {
+		return balcon;
+	}
 
 
-	public int getCapacidad() {
+	public boolean isVista() {
+		return vista;
+	}
+
+
+	public boolean isCocina() {
+		return cocina;
+	}
+
+	public ArrayList<Cama> getCamas() {
+		return camas;
+	}
+
+	public int getCantidadCamas () {
+		return camas.size();
+	}
+	
+	public int getCapacidadNiños() {
+		int capacidad = 0;
+		for(Cama cama : camas) {
+			if(cama.getTipo().equals("Niños")) {
+				capacidad += cama.getCapacidad();
+			}
+		}
+		return capacidad;
+	}
+	
+	public int getCapacidadNormal() {
+		int capacidad = 0;
+		for(Cama cama : camas) {
+			if(cama.getTipo().equals("Normal")) {
+				capacidad += cama.getCapacidad();
+			}
+		}
 		return capacidad;
 	}
 
-
-
-	public String getTipo() {
-		return tipo;
+	public int getCapacidad () {
+		return getCapacidadNiños() + getCapacidadNormal();
 	}
 
-
-
-	public int getNumCamas() {
-		return numCamas;
-	}
-
-
-
-	public Set<String> getElementosDeCobro() {
-		return elementosDeCobro.keySet();
-	}
-
-
-
-	public void setIdHabi(String idHabi) {
-		this.idHabi = idHabi;
-	}
-
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
-	public void setCapacidad(int capacidad) {
-		this.capacidad = capacidad;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public void setNumCamas(int numCamas) {
-		this.numCamas = numCamas;
-	}
-
-	public void setElementosDeCobro(HashMap<String, Integer> elementosDeCobro) {
-		this.elementosDeCobro = elementosDeCobro;
-	}
-
-	public void setReservas(ArrayList<Reserva> reservas) {
-		this.reservas = reservas;
-	}
-
-	public void setTarifas(ArrayList<Tarifa> tarifas) {
-		this.tarifas = tarifas;
-	}
-
-	public void setCamas(ArrayList<Cama> camas) {
-		this.camas = camas;
-	}
-
-	public ArrayList<Object> getElementosAdicionales() {
-		ArrayList<Object> rta = new ArrayList<>();
-		for (Cama item:elementosAdicionales) {
-			rta.add(item.getEspecificaciones());
-		}
-		return rta;
-	}
-
-
-
-	public ArrayList<Reserva> getReservas() {
-		return reservas;
-	}
-
-
-
-	public ArrayList<Tarifa> getTarifas() {
-		return tarifas;
-	}
-
-
-
-	public ArrayList<Object> getCamas() {
-		ArrayList<Object> rta = new ArrayList<>();
-		for (Cama item:camas) {
-			rta.add(item.getEspecificaciones());
-		}
-		return rta;
-	}
-
-
-
-	public ArrayList<Facturacion> getCuenta() {
-		return cuenta;
-	}
-
-
-
-	public ArrayList<Huesped> getHuespeds() {
-		return huespeds;
-	}
-
-
-
-	public void setElementosAdicionales(ArrayList<Cama> elementosAdicionales) {
-		this.elementosAdicionales = elementosAdicionales;
-	}
-
-
-
-	public void setReservas(Reserva reserva) {
-		reservas.add(reserva);
+	public int getPrecio(String fecha) {
+		return disponibilidad.get(fecha).getPrecio();
 	}
 	
-	
-	
-	public void cancelarReserva(String documento) {
-		for (Reserva r : reservas) {
-			if (r.getDocumento().equals(documento)){
-				reservas.remove(reservas.indexOf(r));
-			}
-		}
+	public void agregarCama(Cama cama) {
+		camas.add(cama);
 	}
 
-
-
-	public void setCuenta(ArrayList<Facturacion> cuenta) {
-		this.cuenta = cuenta;
-	}
-
-
-
-	public void setHuespeds(ArrayList<Huesped> huespeds) {
-		this.huespeds = huespeds;
+	public HashMap<String, Disponibilidad> getDisponibilidad() {
+		return disponibilidad;
 	}
 	
-	public Reserva getReservaEspecifica(Date date) {
-		for (Reserva item:reservas) {
-			Date fechaI = item.getDateInicio();
-			Date fechaF = item.getDateFin();
-			if (date.after(fechaI) && date.before(fechaF)) {
-				return item;
-			}
-		}
-		return null;
-
-	}
-
-	public ArrayList<Object> getDescripcion() {
-		ArrayList<Object> descripcion = new ArrayList<Object>();
-		descripcion.add(getIdHabi());
-		descripcion.add(getUbicacion());
-		descripcion.add(getCapacidad());
-		descripcion.add(getTipo());
-		descripcion.add(getNumCamas());
-		descripcion.add(getElementosDeCobro());
-		descripcion.add(getCamas());
-		return descripcion;
-		
+	public void setDisponibilidad(HashMap<String, Disponibilidad> disponibilidad) {
+		this.disponibilidad = disponibilidad;
 	}
 	
-	 
-	public int getPrecioHabitacion(Date date) {
-		ArrayList<Tarifa> tarifas = getTarifas();
-		int indice = tarifas.indexOf(date);
-		Tarifa tarifa = tarifas.get(indice);
-		Collection<Integer> preciosC = elementosDeCobro.values();
-		int precio= tarifa.getPrecio();
-		for (Integer item:preciosC) {
-			precio += item;
+	public int getPrecioBase() {
+		int precioBase = 0;
+		if(getTipo().equals("Estandar")) {
+			precioBase = 40500;
+		}else if(getTipo().equals("Suite")) {
+			precioBase = 80000;
+		}else if(getTipo().equals("Suite_Doble")) {
+			precioBase = 150000;
 		}
-		return precio;
-		
-	}
-	
-	public void agregarElementoAdicional(Cama cama) {
-		if (verificarCapacidad() == false) {
-			elementosAdicionales.add(cama);
+		if(isBalcon()) {
+			precioBase += 30000;
 		}
-		else {
-			System.out.println("No se pueden agregar mas camas, pues la capacidad ya esta en su limite");
+		if(isVista()) {
+			precioBase += 20000;
 		}
-	}
-	
-	public boolean verificarCapacidad() {
-		int capBase = 0;
-		for (Cama item:camas) {
-			capBase += item.getCapacidad();
+		if(isCocina()) {
+			precioBase += 10000;
 		}
-		boolean rta = false;
-		if (!elementosAdicionales.isEmpty()) {
-			for (Cama item:elementosAdicionales) {
-				int cap = item.getCapacidad();
-				capBase += cap;
-			}
-		}
-		if (capBase <= capacidad) {
-			rta = false;
-		}
-		else {
-			rta = true;
-		}
-		return rta;
-	}
-	public void addFacturacion(Date fechaConsumo, String concepto, int precio, boolean grupal, boolean pago, String nombreHuesped) {
-		cuenta.add(new Facturacion(fechaConsumo, concepto, precio, grupal, pago, nombreHuesped));
+		return precioBase;
 	}
 }

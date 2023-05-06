@@ -1,145 +1,60 @@
-package modelo;
+package logic;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
 
 public class Recepcionista extends Empleado{
-
-	private ArrayList<ReservarHabitacion> reservas;
-	
-	public Recepcionista(String name, String id, String correo, String password, String rol,
-			PropertyManagamentSystem pms) {
-		super(name, id, correo, password, rol, pms);
-		// TODO Auto-generated constructor stub
+	private HashMap<String, Huesped> clientes;
+	Recepcionista(String nombre, String ID, String numeroContacto, String correo, String rol, String usuario,
+			String contrasenia, HashMap<String, Habitacion> habitaciones, HashMap<String, Cuenta> cuentas, HashMap<String, Huesped> clientes) {
+		super(nombre, ID, numeroContacto, correo, rol, usuario, contrasenia, habitaciones, cuentas);
+		this.clientes = clientes;
 	}
 	
-	public String consultarHabitacion(String idHabitacion){
-		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
-		String descripcion = "";
-		for (Habitacion h:habitaciones) {
-			
-			if(h.getIdHabi().equals(idHabitacion)) {
-				ArrayList<Object> infoHabi = h.getDescripcion();
-				descripcion =   "-- Habitacion " + infoHabi.get(0) + " --" +
-								"\n   - Tipo: " + infoHabi.get(3)+
-								"\n   - Ubicacion: " + infoHabi.get(1)+
-								"\n   - Capacidad: " + infoHabi.get(2)+
-								"\n   - No. Camas: " + infoHabi.get(4)+
-								"\n	  - Caracteristicas: ";
-				List<ArrayList<Object>> listaCamas = (List<ArrayList<Object>>) infoHabi.get(6);
-				for(ArrayList<Object> o : listaCamas) {
-					descripcion += "\n	    Cama";
-					for(Object i: o) {
-						descripcion += "\n	      " + i;
-					}
-					
-				}
-								
-				descripcion += "\n	    Atributos";
-				List<Set<String>> listaElementos = (List<Set<String>>) infoHabi.get(5);
-				for(Set<String> e: listaElementos) {
-					descripcion += "\n	      ";
-					for(String i: e) {
-						descripcion += i + " ";
-					}
-				}
-				if (h.getReservas().size() != 0) {
-					descripcion += "\n	  - Reservas: ";
-					
-					for (Reserva r: h.getReservas()) {
-						descripcion += formatearInfoReserva(r);
-					}
+	public void crearHuesped(String nombre, String documentoIdentidad, String numeroContacto, String eMail, String huespedRelacionado) {
+		Huesped huesped = new Huesped(nombre, documentoIdentidad, numeroContacto, eMail, huespedRelacionado);
+		clientes.put(documentoIdentidad, huesped);
+		if(huespedRelacionado != null) {
+			clientes.get(huespedRelacionado).getAcompañantes().add(documentoIdentidad);
+		}
+	}
+	
+	public void eliminarServicioConsumido(Cuenta cuenta, Comsumible servicio) {
+		cuenta.getServiciosConsumidos().remove(servicio);
+	}
+	
+	public void cerrarCuenta(Cuenta cuenta) {
+		Huesped huesped = clientes.get(cuenta.getDocumentoIdentidadCliente());
+		huesped.setCuentaActual(null);
+		huesped.getCuentasAnteriores().add(cuenta.getIdCuenta());
+		for(String documentoAcompañante : huesped.getAcompañantes()) {
+			Huesped acompañante = clientes.get(documentoAcompañante);
+			if(acompañante != null) {
+				acompañante.setHuespedRelacionado(null);
+			}
+		}
+		for(Comsumible servicio : cuenta.getServiciosConsumidos()) {
+			if(habitaciones.containsKey(servicio.getNombre())) {
+				Habitacion habitacion = habitaciones.get(servicio.getNombre());
+				if(habitacion.getDisponibilidad().keySet().contains(servicio.getFechaServicio())) {
+					habitacion.getDisponibilidad().get(servicio.getFechaServicio()).setOcupado("Disponible");
 				}
 			}
 		}
-		return descripcion;
+		huesped.getAcompañantes().clear();
 	}
 	
-	
-	public String consultarReserva(String idHabitacion, Date fecha){
-		String descripcion;
-		Reserva rsv = null;
-		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
-		for (Habitacion h: habitaciones) {
-			if (h.getIdHabi().equals(idHabitacion)) {
-				rsv = h.getReservaEspecifica(fecha);
-				break;
-			}
+	public void pagarTodosServicios(Cuenta cuenta) {
+		for(Comsumible servicio : cuenta.getServiciosConsumidos()) {
+			servicio.setEstadoPago(true);
 		}
-		
-		if (rsv != null) {
-			descripcion = formatearInfoReserva(rsv, idHabitacion, fecha);
-		}else {
-			descripcion = "No hay reservas para la habitación " + idHabitacion + " en la fecha " + fecha;
-		}
-		return descripcion;
 	}
 	
-	public String formatearInfoReserva(Reserva rsv, String IdHabitacion, Date fecha) {
-		
-		ArrayList<Object> infoReserva = rsv.getEspecificaciones();
-		String descripcion =	"Reserva de la habitación " + IdHabitacion + "para la fecha: " + fecha +
-								"\n		Fechas: " + infoReserva.get(0) + " hasta " + infoReserva.get(1);
-		List<ArrayList<Object>> huespeds = (List<ArrayList<Object>>) infoReserva.get(3);
-		String huesped = rsv.getListaHuespedes().get(0).getNombre();
-		descripcion += 	"\n		Huesped: " + huesped +
-						"\n 	Documento: " + infoReserva.get(5) +
-						"\n 	Correo: " + infoReserva.get(6) +
-						"\n		Numero: " + infoReserva.get(7);
-		return descripcion;
-	}
-	
-	public String formatearInfoReserva(Reserva rsv) {
-		
-		ArrayList<Object> infoReserva = rsv.getEspecificaciones();
-		String descripcion =	"\n-----------------------------------------------------------------------" +
-								"\n		Fechas: " + infoReserva.get(0) + " hasta " + infoReserva.get(1);
-		List<ArrayList<Object>> huespeds = (List<ArrayList<Object>>) infoReserva.get(3);
-		String huesped = rsv.getListaHuespedes().get(0).getNombre();
-		descripcion += 	"\n		Huesped: " + huesped +
-						"\n 	Documento: " + infoReserva.get(5) +
-						"\n 	Correo: " + infoReserva.get(6) +
-						"\n		Numero: " + infoReserva.get(7);
-		return descripcion;
+	public void nuevaReserva(Huesped huesped, Comsumible servicioAlojamiento, boolean pago, String fecha, String idCuenta) {
+		Cuenta cuenta = new Cuenta(idCuenta, huesped.getDocumento());
+		cuenta.agregarServicio(servicioAlojamiento, pago, fecha);
+		cuentas.put(idCuenta, cuenta);
+		huesped.setCuentaActual(idCuenta);
 	}
 	
 	
-	public void crearReserva(Date inicio, Date fin, ArrayList<String> idHabitaciones, ArrayList<ArrayList<String>> huespeds, String documento, String correo, String numero, String IDGrupo) throws IOException {
-		ArrayList<Habitacion> habitaciones = super.PMS.getHabitaciones();
-		ArrayList<Habitacion> habitacionesReservadas = new ArrayList<Habitacion>();
-		ArrayList<Huesped> huespedsReserva = new ArrayList<Huesped>();
-		for (String id: idHabitaciones) {
-			for (Habitacion h: habitaciones) {
-				if (id.equals(h.getIdHabi())){
-					habitacionesReservadas.add(h);
-					break;
-				}
-			}
-		}
-		
-		for(ArrayList<String> infoHuesped: huespeds) {
-			huespedsReserva.add(new Huesped(IDGrupo, infoHuesped.get(0), infoHuesped.get(1)));
-		}
-		
-		reservas.add(new ReservarHabitacion(inicio, fin, habitacionesReservadas, huespedsReserva, documento, correo, numero));
-		Reserva reserva = reservas.get(reservas.size() - 1).crearReserva();
-		ModificadorDeArchivo.guardarReserva(PMS, reserva);
-	}
-	
-	public String cancelarReserva(String documentoHuesped) throws IOException {
-		String rta = "";
-		String numero = null;
-		for (ReservarHabitacion rh: reservas) {
-			if (documentoHuesped.equals(rh.getDocumento())){
-				rta = rh.cancelarReserva();
-				numero = rh.getNumero();
-				break;
-			}
-		}
-		ModificadorDeArchivo.removerReserva(PMS, numero);
-		return rta;
-	}
 }
