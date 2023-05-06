@@ -11,13 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import modelo.PropertyManagamentSystem;
+import modelo.PropertyManagementSystem;
 
 
 public class consolaHotel {
 
 	private boolean continuar = true;
-	private PropertyManagamentSystem PMS = new PropertyManagamentSystem();
+	private PropertyManagementSystem PMS = new PropertyManagementSystem();
 
 
 	public void ejecutarAplicacion()
