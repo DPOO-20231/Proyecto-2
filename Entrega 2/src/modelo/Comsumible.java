@@ -1,5 +1,4 @@
-package logic;
-
+package modelo;
 public interface Comsumible {
 	public String getNombre();
 	public String getTipoPago();

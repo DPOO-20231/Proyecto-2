@@ -1,4 +1,4 @@
-package logic;
+package modelo;
 
 public class ServicioExterno implements Comsumible{
 	private String nombre;

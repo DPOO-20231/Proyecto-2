@@ -1,5 +1,4 @@
-package logic;
-
+package modelo;
 import java.util.ArrayList;
 
 public class ServicioRestaurante implements Comsumible{

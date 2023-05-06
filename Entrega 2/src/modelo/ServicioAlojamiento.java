@@ -1,5 +1,4 @@
-package logic;
-
+package modelo;
 public class ServicioAlojamiento implements Comsumible{
 	private String nombre;
 	private String tipoPago = "Individual";

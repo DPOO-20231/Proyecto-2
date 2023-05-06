@@ -1,4 +1,4 @@
-package logic;
+package modelo;
 
 public class Producto {
 	String nombre;
