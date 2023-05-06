@@ -13,11 +13,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
+import modelo.PropertyManagementSystem;
 
 public class OpcionesAdministrador extends JDialog implements ActionListener{
-	
-	public OpcionesAdministrador() {
-	
+	private PropertyManagementSystem PMS;
+	public OpcionesAdministrador(PropertyManagementSystem PMS) {
+        this.PMS =PMS;
         setTitle("Opciones Administrador");
         setPreferredSize(new Dimension(400, 500));
         setResizable(false);
@@ -108,7 +109,7 @@ public class OpcionesAdministrador extends JDialog implements ActionListener{
 
 	    switch (comando) {
 	        case "HABITACION":
-	            // Acciones a realizar cuando se presione el botón "Consultar Habitación"
+	            new ConsultarHabitacion(this, PMS);
 	            break;
 	        case "PERSONAL":
 	            // Acciones a realizar cuando se presione el botón "Realizar Reserva"

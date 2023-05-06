@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-
+import modelo.PropertyManagementSystem;
 public class ConsultarHabitacion extends JFrame implements ActionListener {
     private Color bBColor=new Color(Integer.parseInt("2C7873",16));
     private Color BColor=new Color(0x763626);
@@ -11,7 +11,7 @@ public class ConsultarHabitacion extends JFrame implements ActionListener {
     private Color BRColor = new Color(0x021C1E);
     private Font garamond = new Font("Garamond", Font.PLAIN, 16);
     private Font Title=new Font("Garamond", Font.BOLD, 27);
-    public ConsultarHabitacion(JFrame VentanaAnterior){
+    public ConsultarHabitacion(JDialog VentanaAnterior, PropertyManagementSystem PMS){
         VentanaAnterior.setVisible(false);
         JFrame ventana = new JFrame();
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

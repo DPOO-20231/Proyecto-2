@@ -27,7 +27,20 @@ public class PropertyManagementSystem {
 		modificadorArchivos.cargarDatos();
 	}
 	
-	
+	//--------------------------------
+	//OPCIONES DE INICIO
+	//--------------------------------
+	public String login(String User, String Password){
+		String rol=null;
+		Usuario usuariofind=credenciales.get(User);
+		if (usuariofind != null){
+			if (usuariofind.getContrasenia().equals(Password)){rol=usuariofind.getRol();}
+			else { rol="La Contraseña ingresada es erronera";}
+		}
+		else {rol="El usuario ingresado no esta registrado";}
+		return rol;
+	}
+
 	public void newPassword(String newPasword) {
 		if (adminActivo != null) {
 			adminActivo.setContrasenia(newPasword);
