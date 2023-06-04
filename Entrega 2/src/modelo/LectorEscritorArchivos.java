@@ -135,7 +135,11 @@ public class LectorEscritorArchivos {
 			String cuentaActual = informacion[5];
 			String acompañantes = informacion[6];
 			String cuentasAnteriores = informacion[7];
-			Huesped huesped = new Huesped(nombre, documentoIdentidad, numeroContacto, EMail, huespedRelacionado);
+			String usuario = informacion[8];
+			String contrasenia = informacion[9];
+			String rol = "Huesped";
+			Huesped huesped = new Huesped(nombre, documentoIdentidad, numeroContacto, EMail, rol,
+					usuario, contrasenia, habitaciones, huespedRelacionado);
 			huesped.setCuentaActual(cuentaActual);
 			for(String acompañante : acompañantes.substring(1, acompañantes.length() - 1).split(", ")) {
 				if(!acompañante.isEmpty()) {

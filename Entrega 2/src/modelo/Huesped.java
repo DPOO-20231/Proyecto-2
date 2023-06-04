@@ -2,23 +2,19 @@ package modelo;
 
 import java.util.ArrayList;
 
-public class Huesped {
-	private String nombre;
-	private String documento;
-	private String numeroContacto;
-	private String correo;	
+import java.util.HashMap;
+
+public class Huesped extends Usuario{
 	private String huespedRelacionado;
 	private String cuentaActual;
 	private ArrayList<String> acompañantes = new ArrayList<>();
 	private ArrayList<String> cuentasAnteriores = new ArrayList<>();
 	
-	public Huesped(String nombre, String documento, String numeroContacto, String correo, String huespedRelacionado) {
+	protected HashMap<String, Cuenta> cuentas;
+	Huesped(String nombre, String ID, String numeroContacto, String correo, String rol, String usuario,
+			String contrasenia, HashMap<String, Habitacion> habitaciones, String huespedRelacionado) {
+		super(nombre, ID, numeroContacto, correo, rol, usuario, contrasenia, habitaciones);
 		this.huespedRelacionado = huespedRelacionado;
-		this.nombre = nombre;
-		this.documento = documento;
-		this.numeroContacto = numeroContacto;
-		this.correo = correo;
-		
 	}
 	
 	public String getNombre() {
@@ -30,11 +26,11 @@ public class Huesped {
 	}
 
 	public String getDocumento() {
-		return documento;
+		return ID;
 	}
 
 	public void setDocumento(String documento) {
-		this.documento = documento;
+		this.ID = documento;
 	}
 
 	public String getNumeroContacto() {
@@ -83,5 +79,26 @@ public class Huesped {
 	
 	public void agregarAcompañante(String documentoAcompañante) {
 		acompañantes.add(documentoAcompañante);
+	}
+	
+	public ArrayList<Habitacion> verificarDisponibilidad(String fecha) {
+		HashMap<String, Habitacion> habitacion = this.habitaciones;
+		ArrayList<Habitacion> rta = new ArrayList<Habitacion>();
+		for (Habitacion habi : habitacion.values()) {
+			HashMap<String, Disponibilidad> disponibilidad = habi.getDisponibilidad();
+			for (String dis : disponibilidad.keySet()) {
+				if (dis == fecha) {
+					rta.add(habi);
+				}
+			}
+		}
+		return rta;
+	}
+	
+	public void nuevaReserva(Huesped huesped, Comsumible servicioAlojamiento, boolean pago, String fecha, String idCuenta) {
+		Cuenta cuenta = new Cuenta(idCuenta, huesped.getDocumento());
+		cuenta.agregarServicio(servicioAlojamiento, pago, fecha);
+		cuentas.put(idCuenta, cuenta);
+		huesped.setCuentaActual(idCuenta);
 	}
 }

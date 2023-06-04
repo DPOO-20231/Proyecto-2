@@ -10,8 +10,10 @@ public class Recepcionista extends Empleado{
 		this.clientes = clientes;
 	}
 	
-	public void crearHuesped(String nombre, String documentoIdentidad, String numeroContacto, String eMail, String huespedRelacionado) {
-		Huesped huesped = new Huesped(nombre, documentoIdentidad, numeroContacto, eMail, huespedRelacionado);
+	public void crearHuesped(String nombre, String documentoIdentidad, String numeroContacto, String eMail, String huespedRelacionado, String contrasenia,
+			HashMap<String, Habitacion> habitaciones, String rol) {
+		Huesped huesped = new Huesped(nombre, documentoIdentidad, numeroContacto, eMail, rol, usuario,
+				contrasenia, habitaciones, huespedRelacionado);
 		clientes.put(documentoIdentidad, huesped);
 		if(huespedRelacionado != null) {
 			clientes.get(huespedRelacionado).getAcompañantes().add(documentoIdentidad);
